@@ -42,7 +42,7 @@ export default {
     next: function () {
       this.index =
         this.index < this.questions.length - 1 ? this.index + 1 : this.index;
-      console.log(this.questions.length, this.index);
+      // console.log(this.questions.length, this.index);
     },
     back: function () {
       this.index = this.index > 0 ? this.index - 1 : this.index;
