@@ -5,19 +5,22 @@
         <b-col md="2"></b-col>
         <b-col md="8">
           <b-card no-body header-tag="header">
-            <!-- <b-card-text>here list should update</b-card-text> -->
+            <!------------------------- -card header  here ------------------------>
             <template v-slot:header>
               <b>
                 <span>{{index+1}})</span>
+                <!-- question is here --------------------------- -->
                 {{Question.question}}
               </b>
             </template>
+            <!-- card body ------------------------ -->
             <b-card-body>
               <div class="T-center" style="margin-top:25px; min-height:200px">
                 <b-list-group>
+                  <!-- questino answers here ----------------------- -->
                   <b-list-group-item
                     href="#"
-                    v-for="(choice,index) in choices"
+                    v-for="(choice,index) in Question.answers"
                     :key="index"
                     @click="selected(index)"
                   >{{choice}}</b-list-group-item>
@@ -66,41 +69,13 @@ export default {
   methods: {
     selected: function (index) {
       this.answers[this.index] = index;
-      // console.log(this.answers, this.answerSheet);
       this.Next();
-    },
-    makeAnswerSheet: function (correct) {
-      this.answerSheet[this.index] = correct;
-      console.log(this.answerSheet);
     },
   },
 
   //--------------------------------------------------------------------------------
 
   computed: {
-    choices: function () {
-      const incorrect_answers = [...this.Question.incorrect_answers];
-      const correct_answer = this.Question.correct_answer;
-      let all = incorrect_answers.concat(correct_answer);
-      let correct = all.length - 1;
-      for (let i = all.length - 1; i > 0; i--) {
-        let j = Math.floor(Math.random() * i);
-        // if (correct === i)
-        if (j == correct) {
-          correct = i;
-        } else if (i == correct) {
-          correct = j;
-        }
-
-        let k = all[i];
-        all[i] = all[j];
-        all[j] = k;
-      }
-      this.makeAnswerSheet(correct);
-      // this.answerSheet[this.index] = correct;
-      // console.log(correct, all, correct_answer, incorrect_answers, this.index);
-      return all;
-    },
     //-----------------
   },
 };

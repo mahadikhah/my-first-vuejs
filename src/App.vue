@@ -3,7 +3,7 @@
     <Header v-if="questions.length>0" />
     <Content
       v-if="questions.length>0"
-      :Question="questions[index]"
+      :Question="randomAnswerSortedQuestions[index]"
       :Next="next"
       :Back="back"
       :index="index"
@@ -50,8 +50,34 @@ export default {
   },
   //--------------------------------------------------------------------------------
   computed: {
-    hello: function () {
-      return "hello";
+    randomAnswerSortedQuestions: function () {
+      let question = this.questions;
+      let sorted = [];
+      question.forEach((element, key) => {
+        element.answers = element.incorrect_answers.concat(
+          element.correct_answer
+        );
+        let correct = element.answers.length - 1;
+        for (let i = element.answers.length - 1; i > 0; i--) {
+          let j = Math.floor(Math.random() * i);
+          if (j == correct) {
+            correct = i;
+          } else if (i == correct) {
+            correct = j;
+          }
+          let k = element.answers[i];
+          element.answers[i] = element.answers[j];
+          element.answers[j] = k;
+        }
+        element.correct_answer_key = correct;
+        sorted[key] = {
+          question: element.question,
+          answers: element.answers,
+          correct_answer_key: element.correct_answer_key,
+        };
+      });
+      // console.log(question);
+      return sorted;
     },
   },
 
