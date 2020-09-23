@@ -29,12 +29,19 @@
             </b-card-body>
             <b-card-footer>
               <b-row align-v="end">
-                <b-col cols="3">
-                  <b-button v-if="index!==0" variant="outline-primary" @click="Back">back</b-button>
+                <b-col cols="1"></b-col>
+                <b-col cols="2">
+                  <b-button v-if="index!==0" variant="outline-danger" @click="back">back</b-button>
                 </b-col>
-                <b-col cols="6"></b-col>
+                <b-col md="6" align-self="center"></b-col>
                 <b-col cols="3">
-                  <b-button v-if="index!==9" variant="outline-primary" @click="Next">next</b-button>
+                  <b-button v-if="index===9" variant="outline-primary" @click="back">submit</b-button>
+                  <b-button
+                    v-if="index!==9"
+                    variant="outline-success"
+                    @click="next"
+                    :disabled="!choosed"
+                  >next</b-button>
                 </b-col>
               </b-row>
             </b-card-footer>
@@ -62,14 +69,45 @@ export default {
     return {
       answers: [],
       answerSheet: [],
+      choosed: false,
       // q: this.props.Question,
     };
   },
   //--------------------------------------------------------------------------------
   methods: {
     selected: function (index) {
+      console.log(
+        `this.answers.length${this.answers.length}`,
+        `this.index${this.index}`,
+        `this.answers${this.answers}`
+      );
+      this.choosed = true;
       this.answers[this.index] = index;
+      // this.Next();
+    },
+    next: function () {
       this.Next();
+      console.log(
+        `this.answers.length${this.answers.length}`,
+        `this.index${this.index}`,
+        `this.answers${this.answers}`
+      );
+      if (this.index >= this.answers.length - 1) {
+        this.choosed = false;
+        console.log("index>=this.answers.length-1");
+      }
+    },
+    back: function () {
+      this.Back();
+      console.log(
+        `this.answers.length${this.answers.length}`,
+        `this.index${this.index}`,
+        `this.answers${this.answers}`
+      );
+      if (this.index <= this.answers.length) {
+        this.choosed = true;
+        console.log("index<this.answers.length");
+      }
     },
   },
 
