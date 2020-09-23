@@ -4,7 +4,7 @@
       <b-row align-v="center">
         <b-col md="2"></b-col>
         <b-col md="8">
-          <b-card no-body header-tag="header">
+          <b-card v-if="!submited" no-body header-tag="header">
             <!------------------------- -card header  here ------------------------>
             <template v-slot:header>
               <b>
@@ -15,16 +15,43 @@
             </template>
             <!-- card body ------------------------ -->
             <b-card-body>
-              <div class="T-center" style="margin-top:25px; min-height:200px">
+              <b-alert
+                v-if="answers[index]===Question.correct_answer_key&& resultsMode"
+                show
+                variant="success"
+              >you choosed the TRUE answer</b-alert>
+              <b-alert
+                v-if="answers[index]!==Question.correct_answer_key&& resultsMode"
+                show
+                variant="danger"
+              >you choosed the WRONG answer</b-alert>
+              <div class="T-center" style="margin-top:5px; min-height:200px">
+                <!-- questino answers here ----------------------- -->
+                <!-- questino answers here ----------------------- -->
+                <!-- questino answers here ----------------------- -->
+                <!-- questino answers here ----------------------- -->
                 <b-list-group>
-                  <!-- questino answers here ----------------------- -->
                   <b-list-group-item
                     href="#"
-                    v-for="(choice,index) in Question.answers"
-                    :key="index"
-                    @click="selected(index)"
-                  >{{choice}}</b-list-group-item>
+                    v-for="(choice,i) in Question.answers"
+                    :key="i"
+                    @click="selected(i)"
+                    :class="[(i==answers[index] && !resultsMode)?'choosed'
+                    :(i===Question.correct_answer_key&&resultsMode)?'trueAns'
+                    :(i===answers[index]&&answers[index]!==Question.correct_answer_key&&resultsMode)?'falseAns':''
+                    ]"
+                  >
+                    <span></span>
+
+                    <span>{{choice}}</span>
+                  </b-list-group-item>
                 </b-list-group>
+
+                <!-- questino answers here ----------------------- -->
+                <!-- questino answers here ----------------------- -->
+                <!-- questino answers here ----------------------- -->
+                <!-- questino answers here ----------------------- -->
+                <!-- questino answers here ----------------------- -->
               </div>
             </b-card-body>
             <b-card-footer>
@@ -35,7 +62,12 @@
                 </b-col>
                 <b-col md="6" align-self="center"></b-col>
                 <b-col cols="3">
-                  <b-button v-if="index===9" variant="outline-primary" @click="back">submit</b-button>
+                  <b-button
+                    v-if="index===9&&!resultsMode"
+                    variant="outline-primary"
+                    @click="submit"
+                    :disabled="!choosed"
+                  >submit</b-button>
                   <b-button
                     v-if="index!==9"
                     variant="outline-success"
@@ -45,6 +77,12 @@
                 </b-col>
               </b-row>
             </b-card-footer>
+          </b-card>
+          <b-card v-if="submited">
+            <b-card-body>
+              your score is : {{finalScore}}/10
+              <b-button variant="success" @click="showResults">view more results</b-button>
+            </b-card-body>
           </b-card>
         </b-col>
         <b-col md="2"></b-col>
@@ -62,60 +100,59 @@ export default {
     Next: Function,
     Back: Function,
     index: Number,
+    resetIndex: Function,
+    finalScore: Number,
+    result: Function,
   },
   //--------------------------------------------------------------------------------
 
   data() {
     return {
       answers: [],
-      answerSheet: [],
+      submited: false,
+      resultsMode: false,
       choosed: false,
-      // q: this.props.Question,
     };
   },
   //--------------------------------------------------------------------------------
   methods: {
-    selected: function (index) {
-      console.log(
-        `this.answers.length${this.answers.length}`,
-        `this.index${this.index}`,
-        `this.answers${this.answers}`
-      );
-      this.choosed = true;
-      this.answers[this.index] = index;
-      // this.Next();
+    submit: function () {
+      this.submited = true;
+      this.result(this.answers);
+    },
+    showResults: function () {
+      this.resetIndex();
+      this.resultsMode = true;
+      this.submited = false;
+    },
+    selected: function (i) {
+      if (!this.resultsMode) {
+        this.choosed = true;
+        let save = [...this.answers];
+        save[this.index] = i;
+        this.answers = [...save];
+      }
     },
     next: function () {
       this.Next();
-      console.log(
-        `this.answers.length${this.answers.length}`,
-        `this.index${this.index}`,
-        `this.answers${this.answers}`
-      );
       if (this.index >= this.answers.length - 1) {
         this.choosed = false;
-        console.log("index>=this.answers.length-1");
       }
     },
     back: function () {
       this.Back();
-      console.log(
-        `this.answers.length${this.answers.length}`,
-        `this.index${this.index}`,
-        `this.answers${this.answers}`
-      );
+
       if (this.index <= this.answers.length) {
         this.choosed = true;
-        console.log("index<this.answers.length");
       }
     },
   },
 
   //--------------------------------------------------------------------------------
+  watch: {},
+  //--------------------------------------------------------------------------------
 
-  computed: {
-    //-----------------
-  },
+  computed: {},
 };
 </script>
 
@@ -128,5 +165,14 @@ export default {
 .content {
   height: 100vh;
   margin-top: 50px;
+}
+.choosed {
+  background-color: lightblue !important;
+}
+.trueAns {
+  background-color: lightgreen !important;
+}
+.falseAns {
+  background-color: lightcoral !important;
 }
 </style>

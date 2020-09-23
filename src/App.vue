@@ -7,6 +7,9 @@
       :Next="next"
       :Back="back"
       :index="index"
+      :resetIndex="resetIndex"
+      :finalScore="finalScore"
+      :result="result"
     />
     <!--  loading spinner  -->
     <!-- {{hello}} -->
@@ -27,6 +30,8 @@ export default {
     return {
       questions: [],
       spinner: true,
+      showResult: false,
+      finalScore: 0,
       index: 0,
     };
   },
@@ -39,6 +44,15 @@ export default {
   },
   //--------------------------------------------------------------------------------
   methods: {
+    result: function (answers) {
+      let score = 0;
+      this.questions.forEach((element, key) => {
+        if (element.correct_answer_key === answers[key]) {
+          score++;
+        }
+      });
+      this.finalScore = score;
+    },
     next: function () {
       this.index =
         this.index < this.questions.length - 1 ? this.index + 1 : this.index;
@@ -46,6 +60,9 @@ export default {
     },
     back: function () {
       this.index = this.index > 0 ? this.index - 1 : this.index;
+    },
+    resetIndex: function () {
+      this.index = 0;
     },
   },
   //--------------------------------------------------------------------------------
