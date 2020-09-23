@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Header v-if="questions.length>0" />
+    <Header v-if="questions.length>0" :category="questions[1].category" :index="index" />
     <Content
       v-if="questions.length>0"
       :Question="randomAnswerSortedQuestions[index]"
