@@ -1,8 +1,12 @@
 <template>
   <div id="app">
-    <Header v-if="questions.length>0" :category="questions[1].category" :index="index" />
+    <Header
+      v-if="questions.length > 0"
+      :category="questions[1].category"
+      :index="index"
+    />
     <Content
-      v-if="questions.length>0"
+      v-if="questions.length > 0"
       :Question="randomAnswerSortedQuestions[index]"
       :Next="next"
       :Back="back"
@@ -14,7 +18,21 @@
     <!--  loading spinner  -->
     <!-- {{hello}} -->
     <div v-if="spinner" class="d-flex align-items-center spinner">
-      <b-spinner variant="primary" label="Text Centered" type="grow"></b-spinner>loading
+      <b-spinner
+        variant="primary"
+        label="Text Centered"
+        type="grow"
+      ></b-spinner>
+      <b-spinner
+        variant="primary"
+        label="Text Centered"
+        type="grow"
+      ></b-spinner>
+      <b-spinner
+        variant="primary"
+        label="Text Centered"
+        type="grow"
+      ></b-spinner>
     </div>
   </div>
 </template> 
@@ -125,5 +143,7 @@ export default {
   position: absolute;
   left: 50%;
   top: 50%;
+  transform: translate(-50%, -50%);
+  transition: 5s all;
 }
 </style>

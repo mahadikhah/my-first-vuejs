@@ -8,24 +8,32 @@
             <!------------------------- -card header  here ------------------------>
             <template v-slot:header>
               <b>
-                <span>{{index+1}})</span>
+                <span>{{ index + 1 }})</span>
                 <!-- question is here --------------------------- -->
-                {{Question.question}}
+                <span v-once>
+                  {{ Question.question }}
+                </span>
               </b>
             </template>
             <!-- card body ------------------------ -->
             <b-card-body>
               <b-alert
-                v-if="answers[index]===Question.correct_answer_key&& resultsMode"
+                v-if="
+                  answers[index] === Question.correct_answer_key && resultsMode
+                "
                 show
                 variant="success"
-              >you choosed the TRUE answer</b-alert>
+                >you choosed the TRUE answer</b-alert
+              >
               <b-alert
-                v-if="answers[index]!==Question.correct_answer_key&& resultsMode"
+                v-if="
+                  answers[index] !== Question.correct_answer_key && resultsMode
+                "
                 show
                 variant="danger"
-              >you choosed the WRONG answer</b-alert>
-              <div class="T-center" style="margin-top:5px; min-height:200px">
+                >you choosed the WRONG answer</b-alert
+              >
+              <div class="T-center" style="margin-top: 5px; min-height: 200px">
                 <!-- questino answers here ----------------------- -->
                 <!-- questino answers here ----------------------- -->
                 <!-- questino answers here ----------------------- -->
@@ -33,17 +41,24 @@
                 <b-list-group>
                   <b-list-group-item
                     href="#"
-                    v-for="(choice,i) in Question.answers"
+                    v-for="(choice, i) in Question.answers"
                     :key="i"
                     @click="selected(i)"
-                    :class="[(i==answers[index] && !resultsMode)?'choosed'
-                    :(i===Question.correct_answer_key&&resultsMode)?'trueAns'
-                    :(i===answers[index]&&answers[index]!==Question.correct_answer_key&&resultsMode)?'falseAns':''
+                    :class="[
+                      i == answers[index] && !resultsMode
+                        ? 'choosed'
+                        : i === Question.correct_answer_key && resultsMode
+                        ? 'trueAns'
+                        : i === answers[index] &&
+                          answers[index] !== Question.correct_answer_key &&
+                          resultsMode
+                        ? 'falseAns'
+                        : '',
                     ]"
                   >
                     <span></span>
 
-                    <span>{{choice}}</span>
+                    <span>{{ choice }}</span>
                   </b-list-group-item>
                 </b-list-group>
 
@@ -58,30 +73,39 @@
               <b-row align-v="end">
                 <b-col cols="1"></b-col>
                 <b-col cols="2">
-                  <b-button v-if="index!==0" variant="outline-danger" @click="back">back</b-button>
+                  <b-button
+                    v-if="index !== 0"
+                    variant="outline-danger"
+                    @click="back"
+                    >back</b-button
+                  >
                 </b-col>
                 <b-col md="6" align-self="center"></b-col>
                 <b-col cols="3">
                   <b-button
-                    v-if="index===9&&!resultsMode"
+                    v-if="index === 9 && !resultsMode"
                     variant="outline-primary"
                     @click="submit"
                     :disabled="!choosed"
-                  >submit</b-button>
+                    >submit</b-button
+                  >
                   <b-button
-                    v-if="index!==9"
+                    v-if="index !== 9"
                     variant="outline-success"
                     @click="next"
                     :disabled="!choosed"
-                  >next</b-button>
+                    >next</b-button
+                  >
                 </b-col>
               </b-row>
             </b-card-footer>
           </b-card>
           <b-card v-if="submited">
             <b-card-body>
-              your score is : {{finalScore}}/10
-              <b-button variant="success" @click="showResults">view more results</b-button>
+              your score is : {{ finalScore }}/10
+              <b-button variant="success" @click="showResults"
+                >view more results</b-button
+              >
             </b-card-body>
           </b-card>
         </b-col>
@@ -159,6 +183,10 @@ export default {
 
 
 <style scoped>
+.content {
+  transform: translate(3, 3);
+  transition: 2s all;
+}
 .T-center {
   text-align: center;
 }
